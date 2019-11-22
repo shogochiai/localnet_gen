@@ -4,12 +4,13 @@ TAG=latest
 IMAGE_FULLNAME=$DOCKERHUB_REPO:$TAG
 
 DOCKERHUB_NAME=${1:-sgtn}
-BRANCH=${2:-@sg/michelson-level}
+ORG=${2:-cryptoeconomicslab}
+BRANCH=${3:-@sg/michelson-level}
 echo "Dockerhub Target = $DOCKERHUB_NAME/$DOCKERHUB_REPO"
-echo "Tezos Branch = $BRANCH"
+echo "Tezos Target = $ORG"/tezos#"$BRANCH
 
 
-[ ! -d "./tezos" ] && git clone git@gitlab.com:tezos/tezos.git
+[ ! -d "./tezos" ] && git clone git@gitlab.com:$ORG/tezos.git
 if [ -d "./tezos" ]; then
   cd tezos
   git checkout $BRANCH

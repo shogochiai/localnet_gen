@@ -7,7 +7,7 @@ DOCKERHUB_NAME=${1:-sgtn}
 ORG=${2:-cryptoeconomicslab}
 BRANCH=${3:-@sg/michelson-level}
 echo "Dockerhub Target = $DOCKERHUB_NAME/$DOCKERHUB_REPO"
-echo "Tezos Target = $ORG"/tezos#"$BRANCH
+echo "Tezos Target = $ORG/tezos#$BRANCH"
 
 
 [ ! -d "./tezos" ] && git clone git@gitlab.com:$ORG/tezos.git

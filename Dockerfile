@@ -23,9 +23,13 @@ COPY cacert.pem /etc/ssl/certs/ca-certificates.crt
 WORKDIR /usr/local
 
 COPY opam-2.0.0-x86_64-linux /usr/local/bin/opam
-RUN opam init --disable-sandboxing
+RUN opam init --disable-sandboxing --compiler=4.07.1
 RUN eval $(opam env)
+RUN opam install dune
 
 COPY ./tezos ./tezos
 WORKDIR /usr/local/tezos
+RUN useradd tezos
 RUN make build-deps
+WORKDIR /usr/local
+RUN rm -rf tezos

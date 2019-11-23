@@ -1,12 +1,15 @@
+#!/bin/bash
+
 ###
 # !!! Read Me !!!
 #
 # ./bake_image.sh SKIP_BARE DOCKERHUB_NAME ORG BRANCH
 #
 # # Args
-# 1. DOCKERHUB_NAME default=sgtn
-# 2. (Gitlab's Tezos Fork's)ORG default=cryptoeconomicslab
-# 3. BRANCH default=@sg/michelson-level
+# 1. "skip" flag
+# 2. DOCKERHUB_NAME default=sgtn
+# 3. (Gitlab's Tezos Fork's)ORG default=cryptoeconomicslab
+# 4. BRANCH default=@sg/michelson-level
 #
 # # Preparation
 # ex1. You must input dockerhub pass into secret read dialog
@@ -19,7 +22,7 @@
 ###################
 SKIP=${1:-skip}
 DOCKERHUB_NAME=${2:-sgtn}
-BASENAME="tezos_build"
+BASENAME="tezos"
 DOCKERHUB_BARE_REPO_body=$BASENAME"_deps"
 DOCKERHUB_COMPLETED_REPO_body=tezos
 DOCKERHUB_BARE_REPO=$DOCKERHUB_NAME/$DOCKERHUB_BARE_REPO_body
@@ -58,8 +61,8 @@ hubcount=0
 ###################
 # Explain what will happen
 ###################
-ORG=${2:-cryptoeconomicslab}
-BRANCH=${3:-@sg/michelson-level}
+ORG=${3:-cryptoeconomicslab}
+BRANCH=${4:-@sg/michelson-level}
 echo "Dockerhub Target = $DOCKERHUB_BARE_REPO"
 echo "Tezos Target = $ORG/tezos#$BRANCH"
 
@@ -102,7 +105,7 @@ if [[ $IMAGES_RAW == *$DOCKERHUB_BARE_REPO*$TAG* ]]; then
   # Build custom Tezos inside docker
   ###################
   cd ./tezos
-  scripts/ci/create_docker_image.build.sh $DOCKERHUB_NAME/$BASENAME 2> ./create_docker_image.log
+  scripts/ci/create_docker_image.build.sh $DOCKERHUB_NAME/tezos
   cd ../
 
   ###################

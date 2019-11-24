@@ -55,8 +55,9 @@ repos=`docker-hub repos --orgname $DOCKERHUB_NAME`
 ###################
 hubcount=0
 [[ $repos != *" "$DOCKERHUB_BARE_REPO_body" "* ]] && hubcount=$(($hubcount+1))
+[[ $repos != *" "$DOCKERHUB_BARE_REPO_body"_intermediate "* ]] && hubcount=$(($hubcount+1))
 [[ $repos != *" "$DOCKERHUB_COMPLETED_REPO_boby" "* ]] && hubcount=$(($hubcount+1))
-[ "$hubcount" -gt "0" ] && echo "Please add $DOCKERHUB_BARE_REPO_body and $DOCKERHUB_COMPLETED_REPO_boby in your dockerhub repos." && exit 1
+[ "$hubcount" -gt "0" ] && echo "Please add $DOCKERHUB_BARE_REPO_body, ${DOCKERHUB_BARE_REPO_body}_intermediate, and $DOCKERHUB_COMPLETED_REPO_boby in your dockerhub repos." && exit 1
 
 ###################
 # Explain what will happen
@@ -85,7 +86,7 @@ fi
 ###################
 
 echo "Start Building: $IMAGE_FULLNAME"
-[ "$SKIP" != "skip" ] && docker image build -t $IMAGE_FULLNAME --ulimit nofile=1024 .
+[[ "$SKIP" != "skip" && "$SKIP" != "deepskip" ]] && docker image build -t $IMAGE_FULLNAME --ulimit nofile=1024 .
 echo "Build Finished."
 
 
@@ -102,17 +103,29 @@ if [[ $IMAGES_RAW == *$DOCKERHUB_BARE_REPO*$TAG* ]]; then
   ###################
   # Push bare image to Dockerhub
   ###################
-  [ "$SKIP" != "skip" ] && docker push $IMAGE_FULLNAME
+  [[ "$SKIP" != "skip" && "$SKIP" != "deepskip" ]] && docker push $IMAGE_FULLNAME
 
+
+  ######
+  # Replace by custom scripts
+  ######
+  cp ./tezos/scripts/localnet.sh /tmp/localnet.sh
+  cp ./tezos/scripts/ci/create_docker_image.build.sh /tmp/create_docker_image.build.sh
+  cp ./create_docker_image.build.sh ./tezos/scripts/ci/create_docker_image.build.sh
+  cp ./localnet.sh ./tezos/scripts/localnet.sh
+
+  cd ./tezos
   ###################
   # Build custom Tezos inside docker
   ###################
-  cp ./tezos/scripts/ci/create_docker_image.build.sh /tmp/cdib.sh
-  cp ./create_docker_image.build.sh ./tezos/scripts/ci/create_docker_image.build.sh
-  cd ./tezos
-  scripts/ci/create_docker_image.build.sh $DOCKERHUB_NAME/tezos
+  scripts/ci/create_docker_image.build.sh $DOCKERHUB_NAME/tezos $SKIP
   cd ../
-  cp /tmp/cdib.sh ./tezos/scripts/ci/create_docker_image.build.sh
+
+  ######
+  # Restore modified data
+  ######
+  cp /tmp/create_docker_image.build.sh ./tezos/scripts/ci/create_docker_image.build.sh
+  cp  /tmp/localnet.sh ./tezos/scripts/localnet.sh
 
   ###################
   # Push completed image to Dockerhub

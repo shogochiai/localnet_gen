@@ -20,8 +20,10 @@ cleanup () {
 trap cleanup EXIT INT
 
 image_name="${1:-tezos_build}"
-image_version="${2:-latest}"
-base_image="${3-${image_name}_deps:${image_version}}"
+image_version="latest"
+base_image="${image_name}_deps:${image_version}"
+intermediate_image="${image_name}_deps_intermediate:${image_version}"
+SKIP=${2:-skip}
 
 mkdir -p "$tmp_dir"/tezos/scripts
 cp -a Makefile "$tmp_dir"/tezos
@@ -33,6 +35,9 @@ cp -a src "$tmp_dir"/tezos
 cp -a vendors "$tmp_dir"/tezos
 
 
+########
+# build-deps caching
+########
 cat <<EOF > "$tmp_dir"/Dockerfile
 FROM $base_image
 COPY --chown=tezos:nogroup tezos tezos
@@ -41,7 +46,31 @@ RUN mkdir -p /usr/local/share/tezos
 RUN echo "alpha" > /usr/local/share/tezos/active_protocol_versions
 WORKDIR ./tezos
 RUN opam exec -- make build-deps
-RUN opam exec -- make all build-test
+EOF
+
+
+if [ "$SKIP" != "deepskip" ]; then
+    echo
+    echo "### Building tezos-intermediate..."
+    echo
+    docker build -t $intermediate_image "$tmp_dir"
+    docker push $intermediate_image
+    echo
+    echo "### Successfully build docker image: $intermediate_image"
+    echo
+else 
+    echo "### Tezos Intermediate is deepskipped."
+fi
+
+
+
+#######
+# Tezos image by using build-deps cache
+#######
+cat <<EOF > "$tmp_dir"/Dockerfile
+FROM $intermediate_image
+RUN opam exec -- make all
+RUN echo "./localnet.sh" > /usr/local/share/tezos/alphanet.sh
 EOF
 
 echo

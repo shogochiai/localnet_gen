@@ -28,12 +28,14 @@ SKIP=${2:-skip}
 mkdir -p "$tmp_dir"/tezos/scripts
 cp -a Makefile "$tmp_dir"/tezos
 cp -a active_protocol_versions "$tmp_dir"/tezos
+cp -a scripts/alphanet_version "$tmp_dir"/tezos/scripts/
+cp -a scripts/docker/entrypoint.sh "$tmp_dir"/tezos/scripts/
+cp -a scripts/docker/entrypoint.inc.sh "$tmp_dir"/tezos/scripts/
 cp -a scripts/version.sh "$tmp_dir"/tezos/scripts/
 cp -a scripts/install_build_deps.sh "$tmp_dir"/tezos/scripts/
 cp -a scripts/install_build_deps.raw.sh "$tmp_dir"/tezos/scripts/
 cp -a src "$tmp_dir"/tezos
 cp -a vendors "$tmp_dir"/tezos
-
 
 ########
 # build-deps caching
@@ -70,7 +72,16 @@ fi
 cat <<EOF > "$tmp_dir"/Dockerfile
 FROM $intermediate_image
 RUN opam exec -- make all
+RUN cp ./scripts/alphanet_version /usr/local/share/tezos/alphanet_version
+RUN cp ./tezos-node /usr/local/bin/tezos-node
+RUN cp ./tezos-baker-alpha /usr/local/bin/tezos-baker
+RUN cp ./tezos-accuser-alpha /usr/local/bin/tezos-accuser
+RUN cp ./tezos-endorser-alpha /usr/local/bin/tezos-endorser
+RUN cp ./tezos-baker-alpha ./tezos-baker
+RUN cp ./tezos-accuser-alpha ./tezos-accuser
+RUN cp ./tezos-endorser-alpha ./tezos-endorser
 RUN echo "./localnet.sh" > /usr/local/share/tezos/alphanet.sh
+ENTRYPOINT ["./scripts/entrypoint.sh"]
 EOF
 
 echo

@@ -83,7 +83,10 @@ fi
 ###################
 # Build docker image of basic Tezos env
 ###################
+
+echo "Start Building: $IMAGE_FULLNAME"
 [ "$SKIP" != "skip" ] && docker image build -t $IMAGE_FULLNAME --ulimit nofile=1024 .
+echo "Build Finished."
 
 
 ###################
@@ -104,9 +107,12 @@ if [[ $IMAGES_RAW == *$DOCKERHUB_BARE_REPO*$TAG* ]]; then
   ###################
   # Build custom Tezos inside docker
   ###################
+  cp ./tezos/scripts/ci/create_docker_image.build.sh /tmp/cdib.sh
+  cp ./create_docker_image.build.sh ./tezos/scripts/ci/create_docker_image.build.sh
   cd ./tezos
   scripts/ci/create_docker_image.build.sh $DOCKERHUB_NAME/tezos
   cd ../
+  cp /tmp/cdib.sh ./tezos/scripts/ci/create_docker_image.build.sh
 
   ###################
   # Push completed image to Dockerhub

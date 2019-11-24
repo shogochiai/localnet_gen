@@ -1,1 +1,0 @@
-./bake_image.sh: line 106: scripts/ci/create_docker_image.build.sh: No such file or directory

@@ -1,5 +1,6 @@
 # Tezos Build Deps
-- Tezos dockerization is not democratic process for now bc Nomadic Labs is managing CI process
+- For MacOS users.
+- Tezos dockerization script is somehow proprietary program.
 - Tezos commands are depending on docker images and these often hard-coded in the bash scripts.
 - Customized Tezos docker image is required to test protocol modification.
 - Dockerfile of Tezos isn't shared hence I created this repo.
@@ -11,3 +12,4 @@
 
 # Note
 - If Tezos requires more than `opam 2.0.*`, please accordingly get it [by this command](https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)
+- You need enough storage for docker; otherwise, `make build-deps` will fail.

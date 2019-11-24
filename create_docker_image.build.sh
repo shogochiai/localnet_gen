@@ -35,6 +35,7 @@ cp -a vendors "$tmp_dir"/tezos
 cat <<EOF > "$tmp_dir"/Dockerfile
 FROM $base_image
 COPY --chown=tezos:nogroup tezos tezos
+COPY ./tezos/active_protocol_versions /usr/local/share/tezos
 WORKDIR ./tezos
 RUN opam exec -- make build-deps
 RUN opam exec -- make all build-test

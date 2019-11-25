@@ -77,7 +77,12 @@ echo "Tezos Target = $ORG/tezos#$BRANCH"
 ###################
 if [ -d "./tezos" ]; then
   cd tezos
+
+  # Cleaning staged files
+  git checkout -- .
+
   git checkout $BRANCH
+
   cd ../
 fi
 
@@ -118,6 +123,10 @@ if [[ $IMAGES_RAW == *$DOCKERHUB_BARE_REPO*$TAG* ]]; then
   # Build custom Tezos inside docker
   ###################
   scripts/ci/create_docker_image.build.sh $DOCKERHUB_NAME/tezos $SKIP
+
+  # Cleaning staged files
+  git checkout -- .
+
   cd ../
 
   ######

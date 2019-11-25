@@ -1,2 +1,2 @@
 #!/bin/bash
-./bake_image.sh deepskip sgtn cryptoeconomicslab @sg/michelson-level
+./bake_image.sh deepskip sgtn cryptoeconomicslab babylonnet #@sg/michelson-level

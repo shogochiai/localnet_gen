@@ -72,6 +72,7 @@ fi
 #######
 cat <<EOF > "$tmp_dir"/Dockerfile
 FROM $intermediate_image
+RUN ls
 RUN opam exec -- make all
 RUN apt-get -y install sudo
 RUN cp ./scripts/alphanet_version /usr/local/share/tezos/alphanet_version

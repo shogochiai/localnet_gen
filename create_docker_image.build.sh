@@ -42,6 +42,7 @@ cp -a vendors "$tmp_dir"/tezos
 ########
 cat <<EOF > "$tmp_dir"/Dockerfile
 FROM $base_image
+RUN ls
 COPY --chown=tezos:nogroup tezos tezos
 ENV PATH $PATH:/usr/local/tezos
 RUN mkdir -p /usr/local/share/tezos
@@ -72,6 +73,7 @@ fi
 cat <<EOF > "$tmp_dir"/Dockerfile
 FROM $intermediate_image
 RUN opam exec -- make all
+RUN apt-get -y install sudo
 RUN cp ./scripts/alphanet_version /usr/local/share/tezos/alphanet_version
 RUN cp ./tezos-node /usr/local/bin/tezos-node
 RUN cp ./tezos-baker-alpha /usr/local/bin/tezos-baker
@@ -81,7 +83,7 @@ RUN cp ./tezos-baker-alpha ./tezos-baker
 RUN cp ./tezos-accuser-alpha ./tezos-accuser
 RUN cp ./tezos-endorser-alpha ./tezos-endorser
 RUN echo "./localnet.sh" > /usr/local/share/tezos/alphanet.sh
-ENTRYPOINT ["./scripts/entrypoint.sh"]
+RUN tezos-node identity generate 0
 EOF
 
 echo

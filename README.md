@@ -13,3 +13,8 @@
 # Note
 - If Tezos requires more than `opam 2.0.*`, please accordingly get it [by this command](https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)
 - You need enough storage for docker; otherwise, `make build-deps` will fail.
+
+# Debug
+- `<username>/tezos_deps`, `<username>/tezos_intermediate`, and `<username>/tezos` are the checkpoints of long build procedures. You can use skip/deepskip option to use such checkpoints.
+- `tezos-node run` will show you the error inside tezos container. You can go inside via `./check_cointainer.sh`
+  - `docker logs localnet_node_1` wouldn't show you enough information.

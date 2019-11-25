@@ -49,7 +49,7 @@ services:
   node:
     image: $docker_image
     hostname: node
-    command: tezos-node --net-addr :$port $@
+    command: tezos-node run --net-addr :$port $@
     ports:
       - "$port:$port"$export_rpc
     expose:
@@ -57,9 +57,11 @@ services:
     volumes:
       - node_data:/var/run/tezos/node
       - client_data:/var/run/tezos/client
-    restart: on-failure
+    tty: true
 
 EOF
+
+
 
 for proto in $(cat "$active_protocol_versions") ; do
 
@@ -69,7 +71,7 @@ for proto in $(cat "$active_protocol_versions") ; do
     hostname: baker-$proto
     environment:
       - PROTOCOL=$proto
-    command: tezos-baker-$proto --max-priority 128
+    command: tezos-baker-$proto
     links:
       - node
     volumes:

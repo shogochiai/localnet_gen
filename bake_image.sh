@@ -123,9 +123,6 @@ if [[ $IMAGES_RAW == *$DOCKERHUB_BARE_REPO*$TAG* ]]; then
   ###################
   scripts/ci/create_docker_image.build.sh $DOCKERHUB_NAME/tezos $SKIP
 
-  # Cleaning staged files
-  git checkout -- .
-
   cd ../
 
   ###################

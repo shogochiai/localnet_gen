@@ -49,7 +49,7 @@ services:
   node:
     image: $docker_image
     hostname: node
-    command: tezos-node run --net-addr :$port $@
+    command: tezos-node run --rpc-addr 127.0.0.1:$port $@
     ports:
       - "$port:$port"$export_rpc
     expose:
@@ -644,7 +644,7 @@ case $(basename "$0") in
         docker_base_dir="$HOME/.tezos-localnet"
         docker_image=sgtn/tezos:latest
         docker_compose_base_name=localnet
-        default_port=14732
+        default_port=8732
         ;;
     zeronet.sh)
         docker_base_dir="$HOME/.tezos-zeronet"

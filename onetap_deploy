@@ -3,10 +3,10 @@ if [ "$1" != "skip" ]; then
   ./bake_localnet.sh
   cd ./tezos
 
-  # Check if process is down
+  
   docker ps | grep localnet_node_1 &> /dev/null
-  if [ $? != 0 ]; then
-    ./scripts/localnet.sh stop
+  if [ $? == 0 ]; then  # if process is running
+    ./scripts/localnet.sh stop  # then stop the cluster
   fi
 
   ./scripts/localnet.sh start

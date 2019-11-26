@@ -1,6 +1,17 @@
-./bake_localnet.sh
-cd ./tezos
-./scripts/localnet.sh stop
-./scripts/localnet.sh start
-cd ..
+
+if [ "$1" != "skip" ]; then
+  ./bake_localnet.sh
+  cd ./tezos
+
+  # Check if process is down
+  docker ps | grep localnet_node_1 &> /dev/null
+  if [ $? != 0 ]; then
+    ./scripts/localnet.sh stop
+  fi
+
+  ./scripts/localnet.sh start
+  cd ..
+fi
+
+./localnet.sh client bootstrapped
 ./deploy_test_contract.sh

@@ -114,7 +114,6 @@ if [[ $IMAGES_RAW == *$DOCKERHUB_BARE_REPO*$TAG* ]]; then
   ######
   # Replace by custom scripts
   ######
-  cp ./tezos/scripts/ci/create_docker_image.build.sh /tmp/create_docker_image.build.sh
   cp ./create_docker_image.build.sh ./tezos/scripts/ci/create_docker_image.build.sh
   cp ./localnet.sh ./tezos/scripts/localnet.sh
 
@@ -128,11 +127,6 @@ if [[ $IMAGES_RAW == *$DOCKERHUB_BARE_REPO*$TAG* ]]; then
   git checkout -- .
 
   cd ../
-
-  ######
-  # Restore modified data
-  ######
-  cp /tmp/create_docker_image.build.sh ./tezos/scripts/ci/create_docker_image.build.sh
 
   ###################
   # Push completed image to Dockerhub

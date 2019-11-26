@@ -72,7 +72,6 @@ fi
 #######
 cat <<EOF > "$tmp_dir"/Dockerfile
 FROM $intermediate_image
-RUN ls
 RUN opam exec -- make all
 RUN apt-get -y install sudo
 RUN cp ./scripts/alphanet_version /usr/local/share/tezos/alphanet_version
@@ -85,6 +84,7 @@ RUN cp ./tezos-accuser-alpha ./tezos-accuser
 RUN cp ./tezos-endorser-alpha ./tezos-endorser
 RUN echo "./localnet.sh" > /usr/local/share/tezos/alphanet.sh
 RUN tezos-node identity generate 0
+RUN echo "http		80/tcp		www		# WorldWideWeb HTTP" > /etc/services
 EOF
 
 echo

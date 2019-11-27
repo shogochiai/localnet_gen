@@ -42,7 +42,6 @@ cp -a vendors "$tmp_dir"/tezos
 ########
 cat <<EOF > "$tmp_dir"/Dockerfile
 FROM $base_image
-RUN ls
 COPY --chown=tezos:nogroup tezos tezos
 ENV PATH $PATH:/usr/local/tezos
 RUN mkdir -p /usr/local/share/tezos
@@ -64,7 +63,6 @@ if [ "$SKIP" != "deepskip" ]; then
 else 
     echo "### Tezos Intermediate is deepskipped."
 fi
-
 
 
 #######

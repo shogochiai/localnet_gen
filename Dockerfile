@@ -23,6 +23,7 @@ COPY cacert.pem /etc/ssl/certs/ca-certificates.crt
 WORKDIR /usr/local
 
 COPY opam-2.0.0-x86_64-linux /usr/local/bin/opam
+COPY tz1UnFzTB3KjSXo27WfyzzpAw33jqjAdohvR.json /usr/local/faucet.json
 RUN opam init --disable-sandboxing --compiler=4.07.1
 RUN eval $(opam env)
 RUN opam install dune

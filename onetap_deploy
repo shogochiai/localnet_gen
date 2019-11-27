@@ -1,8 +1,6 @@
 
-if [ "$1" != "skip" ]; then
-  ./bake_localnet.sh
+function run_localnet(){
   cd ./tezos
-
   
   docker ps | grep localnet_node_1 &> /dev/null
   if [ $? == 0 ]; then  # if process is running
@@ -11,7 +9,12 @@ if [ "$1" != "skip" ]; then
 
   ./scripts/localnet.sh start
   cd ..
-fi
+}
 
-./localnet.sh client bootstrapped
-./deploy_test_contract.sh
+[ "$1" != "skip" ] && ./bake_localnet.sh
+
+run_localnet
+
+./localnet.sh client bootstrapped &>/dev/null &
+./wakeup_alice.sh
+#./deploy_test_contract.sh

@@ -15,10 +15,4 @@ function run_localnet(){
 
 run_localnet
 
-
-docker cp main.tz localnet_node_1:/usr/local/tezos
-docker cp storage.tz localnet_node_1:/usr/local/tezos
-docker cp sandbox_init.sh localnet_node_1:/usr/local/tezos
-docker cp sandbox_deploy_level_lock.sh localnet_node_1:/usr/local/tezos
-
 ./check_container.sh

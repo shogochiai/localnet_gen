@@ -31,11 +31,16 @@ cp -a active_protocol_versions "$tmp_dir"/tezos
 cp -a scripts/alphanet_version "$tmp_dir"/tezos/scripts/
 cp -a scripts/docker/entrypoint.sh "$tmp_dir"/tezos/scripts/
 cp -a scripts/docker/entrypoint.inc.sh "$tmp_dir"/tezos/scripts/
+cp -a main.tz "$tmp_dir"/tezos/
+cp -a storage.tz "$tmp_dir"/tezos/
+cp -a sandbox_init.sh "$tmp_dir"/tezos/
+cp -a sandbox_deploy_level_lock.sh "$tmp_dir"/tezos/
 cp -a scripts/version.sh "$tmp_dir"/tezos/scripts/
 cp -a scripts/install_build_deps.sh "$tmp_dir"/tezos/scripts/
 cp -a scripts/install_build_deps.raw.sh "$tmp_dir"/tezos/scripts/
 cp -a src "$tmp_dir"/tezos
 cp -a vendors "$tmp_dir"/tezos
+
 
 ########
 # build-deps caching

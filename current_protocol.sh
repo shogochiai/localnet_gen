@@ -1,0 +1,1 @@
+./localnet.sh client rpc get /chains/main/blocks/head/metadata

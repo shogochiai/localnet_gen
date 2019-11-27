@@ -15,6 +15,10 @@ function run_localnet(){
 
 run_localnet
 
-./localnet.sh client bootstrapped &>/dev/null &
-./wakeup_alice.sh
-#./deploy_test_contract.sh
+
+docker cp main.tz localnet_node_1:/usr/local/tezos
+docker cp storage.tz localnet_node_1:/usr/local/tezos
+docker cp sandbox_init.sh localnet_node_1:/usr/local/tezos
+docker cp sandbox_deploy_level_lock.sh localnet_node_1:/usr/local/tezos
+
+./check_container.sh

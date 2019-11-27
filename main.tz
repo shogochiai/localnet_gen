@@ -1,0 +1,157 @@
+{ parameter (or (int %deposit) (nat %withdraw)) ;
+  storage (map address (pair (mutez %amount) (int %unlock_level))) ;
+  code { LAMBDA
+           (pair (pair mutez int) (map address (pair mutez int)))
+           (pair (list operation) (map address (pair mutez int)))
+           { DUP ;
+             CAR ;
+             DIP { DUP } ;
+             SWAP ;
+             CDR ;
+             DIP { DUP } ;
+             SWAP ;
+             CDR ;
+             DIP 2 { DUP } ;
+             DIG 2 ;
+             CAR ;
+             DIP { DUP } ;
+             SWAP ;
+             LEVEL ;
+             COMPARE ;
+             GE ;
+             IF { DIP 2 { DUP } ;
+                  DIG 2 ;
+                  NONE (pair mutez int) ;
+                  SOURCE ;
+                  UPDATE ;
+                  DIP { DIP 2 { DUP } ; DIG 2 ; DROP } ;
+                  DIP 3 { DROP } ;
+                  DUG 2 ;
+                  PUSH unit Unit }
+                { PUSH unit Unit } ;
+             DROP ;
+             NIL operation ;
+             DUP ;
+             DIP { DIP 3 { DUP } ; DIG 3 } ;
+             PAIR ;
+             DIP { DROP 6 } } ;
+         DUP ;
+         LAMBDA
+           (pair (lambda
+                    (pair (pair mutez int) (map address (pair mutez int)))
+                    (pair (list operation) (map address (pair mutez int))))
+                 (pair nat (map address (pair mutez int))))
+           (pair (list operation) (map address (pair mutez int)))
+           { DUP ;
+             CAR ;
+             SWAP ;
+             CDR ;
+             DUP ;
+             CAR ;
+             DIP { DUP } ;
+             SWAP ;
+             CDR ;
+             DUP ;
+             DUP ;
+             SOURCE ;
+             GET ;
+             IF_NONE { PUSH string "GET_FORCE" ; FAILWITH } {} ;
+             DUP ;
+             DIP { DIP 2 { DUP } ; DIG 2 } ;
+             PAIR ;
+             DIP { DIP 5 { DUP } ; DIG 5 } ;
+             EXEC ;
+             DIP { DROP 6 } } ;
+         SWAP ;
+         APPLY ;
+         LAMBDA
+           (pair (pair mutez int) (map address (pair mutez int)))
+           (pair (list operation) (map address (pair mutez int)))
+           { DUP ;
+             CAR ;
+             CAR ;
+             DIP { DUP } ;
+             SWAP ;
+             CAR ;
+             CDR ;
+             DIP 2 { DUP } ;
+             DIG 2 ;
+             CDR ;
+             DIP 2 { DUP } ;
+             DIG 2 ;
+             AMOUNT ;
+             ADD ;
+             DIP { DIP { DUP } ; SWAP } ;
+             PAIR ;
+             DUP ;
+             SOME ;
+             DIP { DIP { DUP } ; SWAP } ;
+             SOURCE ;
+             UPDATE ;
+             DIP { DIP { DUP } ; SWAP ; DROP } ;
+             SWAP ;
+             DIP { DIP { DROP } } ;
+             NIL operation ;
+             DUP ;
+             DIP { DIP 2 { DUP } ; DIG 2 } ;
+             PAIR ;
+             DIP { DROP 6 } } ;
+         DUP ;
+         LAMBDA
+           (pair (lambda
+                    (pair (pair mutez int) (map address (pair mutez int)))
+                    (pair (list operation) (map address (pair mutez int))))
+                 (pair int (map address (pair mutez int))))
+           (pair (list operation) (map address (pair mutez int)))
+           { DUP ;
+             CAR ;
+             SWAP ;
+             CDR ;
+             DUP ;
+             CAR ;
+             DIP { DUP } ;
+             SWAP ;
+             CDR ;
+             DUP ;
+             DUP ;
+             SOURCE ;
+             GET ;
+             IF_NONE { PUSH string "GET_FORCE" ; FAILWITH } {} ;
+             DIP 3 { DUP } ;
+             DIG 3 ;
+             DIP { DUP } ;
+             SWAP ;
+             CAR ;
+             DIP { DUP } ;
+             PAIR ;
+             DIP { DIP 3 { DUP } ; DIG 3 } ;
+             PAIR ;
+             DIP { DIP 6 { DUP } ; DIG 6 } ;
+             EXEC ;
+             DIP { DROP 7 } } ;
+         SWAP ;
+         APPLY ;
+         DIP 4 { DUP } ;
+         DIG 4 ;
+         CAR ;
+         DIP 5 { DUP } ;
+         DIG 5 ;
+         CDR ;
+         DIP { DUP } ;
+         SWAP ;
+         IF_LEFT
+           { DUP ;
+             DUP ;
+             DIP { DIP 2 { DUP } ; DIG 2 } ;
+             PAIR ;
+             DIP { DIP 4 { DUP } ; DIG 4 } ;
+             EXEC ;
+             DIP { DROP 2 } }
+           { DUP ;
+             DUP ;
+             DIP { DIP 2 { DUP } ; DIG 2 } ;
+             PAIR ;
+             DIP { DIP 6 { DUP } ; DIG 6 } ;
+             EXEC ;
+             DIP { DROP 2 } } ;
+         DIP { DROP 7 } } }

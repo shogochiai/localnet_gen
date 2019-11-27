@@ -31,10 +31,10 @@ cp -a active_protocol_versions "$tmp_dir"/tezos
 cp -a scripts/alphanet_version "$tmp_dir"/tezos/scripts/
 cp -a scripts/docker/entrypoint.sh "$tmp_dir"/tezos/scripts/
 cp -a scripts/docker/entrypoint.inc.sh "$tmp_dir"/tezos/scripts/
-cp -a main.tz "$tmp_dir"/tezos/
-cp -a storage.tz "$tmp_dir"/tezos/
-cp -a sandbox_init.sh "$tmp_dir"/tezos/
-cp -a sandbox_deploy_level_lock.sh "$tmp_dir"/tezos/
+cp -a ../main.tz "$tmp_dir"/tezos/
+cp -a ../storage.tz "$tmp_dir"/tezos/
+cp -a ../sandbox_init.sh "$tmp_dir"/tezos/
+cp -a ../sandbox_deploy_level_lock.sh "$tmp_dir"/tezos/
 cp -a scripts/version.sh "$tmp_dir"/tezos/scripts/
 cp -a scripts/install_build_deps.sh "$tmp_dir"/tezos/scripts/
 cp -a scripts/install_build_deps.raw.sh "$tmp_dir"/tezos/scripts/
@@ -88,6 +88,8 @@ RUN cp ./tezos-endorser-alpha ./tezos-endorser
 RUN echo "./localnet.sh" > /usr/local/share/tezos/alphanet.sh
 RUN tezos-node identity generate 0
 RUN echo "http		80/tcp		www		# WorldWideWeb HTTP" > /etc/services
+RUN chmod 755 sandbox_init.sh
+RUN chmod 755 sandbox_deploy_level_lock.sh
 EOF
 
 echo
